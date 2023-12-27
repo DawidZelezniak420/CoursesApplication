@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Enrolled-members</title>
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container">
+    <h2>ENROLLED MEMBERS</h2>
+    <hr>
+
+    <table class="table table-bordered table-striped" id="members-table">
+        <thead>
+        <tr>
+            <td>e-mail</td>
+            <td>enroll date</td>
+            <td>action</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member : ${members}">
+            <td th:text="${member.email}"></td>
+            <td th:text="${#temporals.format(member.enrollDate,'yyyy-MM-dd_HH:mm:ss')}"></td>
+            <td>
+                <a th:href="@{/delete/members/(memberEmail=${member.email},courseId=${course.courseId})}"
+                   class="btn btn-danger">delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/list/courses/}" class="btn btn-info">Back</a>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#members-table").DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1]
+            }]
+        });
+    })
+</script>
+</body>
+</html>

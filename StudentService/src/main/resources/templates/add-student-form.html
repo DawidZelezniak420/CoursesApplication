@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add-student</title>
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+
+    <h2>ADD STUDENT</h2>
+    <hr>
+    <form th:action="@{/save/students/}" th:object="${student}" method="post">
+
+        <div class="form-group">
+            <label for="firstName">First name</label>
+            <input th:field="${student.firstName}" id="firstName" class="form-control col-4 mb-2">
+        </div>
+
+        <div class="form-group">
+            <label for="lastName">Last name</label>
+            <input th:field="${student.lastName}" id="lastName" class="form-control col-4 mb-2">
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input th:field="${student.email}" id="email" class="form-control col-4 mb-2">
+        </div>
+
+        <div th:if="${errorInfo != null}" class="alert alert-danger mt-3">
+            <strong>Error:</strong>
+            <ul>
+                <li th:each="error : ${errorInfo}" th:text="${error.message}"></li>
+            </ul>
+        </div>
+
+        <div th:if="${info != null}" class="alert alert-success mt-3">
+            <strong>
+                <span th:text="${info}"></span>
+            </strong>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Save student</button>
+        <a th:href="@{/list/students/}" class="btn btn-info">Back</a>
+    </form>
+</div>
+</body>
+</html>
