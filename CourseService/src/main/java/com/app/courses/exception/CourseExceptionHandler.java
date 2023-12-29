@@ -21,8 +21,7 @@ public class CourseExceptionHandler {
                     , STUDENT_ALREADY_ENROLLED -> httpStatus = HttpStatus.CONFLICT;
             case COURSE_STATUS_IS_INACTIVE
                     , STUDENT_STATUS_IS_INACTIVE
-                    , COURSE_STATUS_IS_FULL
-                    , STUDENT_ID_DOES_NOT_EXISTS -> httpStatus = HttpStatus.BAD_REQUEST;
+                    , COURSE_STATUS_IS_FULL -> httpStatus = HttpStatus.BAD_REQUEST;
             default -> httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return ResponseEntity.status(httpStatus).body(new ErrorInfo(exception.getCourseError().getErrorMessage()));

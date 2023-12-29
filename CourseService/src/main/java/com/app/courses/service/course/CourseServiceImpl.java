@@ -34,7 +34,7 @@ public class CourseServiceImpl implements CourseService {
         this.courseRepository = courseRepository;
         this.feignClient = feignClient;
         this.notificationCreator = notificationCreator;
-        this. emailSender = emailSender;
+        this.emailSender = emailSender;
     }
 
     // method for quickly adding courses
@@ -50,7 +50,8 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.save(course);
     }
 
-    // get courses by status or get all if status is null
+
+    // get courses by status or get oll if status is null
     public List<Course> getCoursesByStatus(Course.Status status) {
         return status != null ? courseRepository.findAllByStatus(status) : courseRepository.findAll();
     }
