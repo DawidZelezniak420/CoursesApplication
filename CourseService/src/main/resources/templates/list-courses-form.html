@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>List-courses</title>
+    <link href="https://cdn.datatables.net/v/dt/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        .table th, .table td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @media (max-width: 400px) {
+            .description-column {
+                white-space: normal;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div class="container">
+    <h2>LIST COURSES</h2>
+    <hr>
+
+    <a th:href="@{/add/courses/form/}" class="btn btn-primary mb-2">New course</a>
+    <table class="table table-bordered table-striped" id="courses-table">
+        <thead>
+        <tr>
+            <td>course_id</td>
+            <td>course name</td>
+            <td class="description-column">description</td>
+            <td>start date</td>
+            <td>end date</td>
+            <td>participants limit</td>
+            <td>participants number</td>
+            <td>status</td>
+            <td>action</td>
+            <td>members</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.courseId}"></td>
+            <td th:text="${course.courseName}"></td>
+            <td th:text="${course.description}" class="description-column"></td>
+            <td th:text="${#temporals.format(course.startDate,'yyyy-MM-dd_HH:mm:ss')}"></td>
+            <td th:text="${#temporals.format(course.endDate,'yyyy-MM-dd_HH:mm:ss')}"></td>
+            <td th:text="${course.participantsLimit}"></td>
+            <td th:text="${course.participantsNumber}"></td>
+            <td th:text="${course.status}"></td>
+            <td>
+                <a th:href="@{/update/courses/form/(courseId=${course.courseId})}" class="btn btn-info">update</a>
+                <hr>
+                <a th:href="@{/delete/courses/(courseId=${course.courseId})}" class="btn btn-danger">delete</a>
+                <hr>
+                <a th:href="@{/finish/enroll/(courseId=${course.courseId})}" class="btn btn-warning">finish-enroll</a>
+            </td>
+            <td>
+                <a th:href="@{/add/members/form/(courseId=${course.courseId})}" class="btn btn-info">add</a>
+                <hr>
+                <a th:href="@{/show/enrolled/members/form/(courseId=${course.courseId})}" class="btn btn-info">show</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#courses-table").DataTable({
+            'aoColumnDefs': [{
+                'bSortable': false,
+                'aTargets': [-1,-2]
+            }]
+        });
+    })
+</script>
+</body>
+
+</html>
