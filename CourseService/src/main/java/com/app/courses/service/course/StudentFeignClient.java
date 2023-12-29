@@ -12,9 +12,9 @@ import java.util.List;
 @FeignClient(name = "STUDENT-SERVICE")
 public interface StudentFeignClient {
 
-    @GetMapping("/students/{studentId}")
+    @GetMapping("/students/{studentId}/")
     StudentDto getStudentById(@PathVariable Long studentId);
 
-    @PostMapping("students/by/e-mails")
+    @PostMapping("students/by/e-mails/")
     List<StudentDto> getStudentsByEmails(@RequestBody List<String> emails);
 }

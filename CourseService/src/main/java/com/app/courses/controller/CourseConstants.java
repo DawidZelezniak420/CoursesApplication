@@ -19,5 +19,4 @@ interface CourseConstants {
     String STUDENT_ATTRIBUTE = "student";
     String MEMBERS_ATTRIBUTE = "members";
     String COURSES_ATTRIBUTE = "courses";
-
 }

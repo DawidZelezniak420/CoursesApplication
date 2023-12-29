@@ -46,23 +46,23 @@ public class StudentController {
         return ResponseEntity.ok().body(service.getStudentById(studentId));
     }
 
-    @DeleteMapping("/{studentId}")
+    @DeleteMapping("/{studentId}/")
     public ResponseEntity<?> setStudentStatusInactive(@PathVariable Long studentId) {
         service.setStudentAsInactive(studentId);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/update/e-mails/{studentId}")
+    @PutMapping("/update/e-mails/{studentId}/")
     public ResponseEntity<Student> updateEmail(@PathVariable Long studentId, @RequestBody @Valid Student student) {
         return ResponseEntity.ok().body(service.putStudent(studentId, student));
     }
 
-    @PatchMapping("/update/{studentId}")
+    @PatchMapping("/update/{studentId}/")
     public ResponseEntity<Student> patchStudent(@PathVariable Long studentId, @RequestBody @Valid Student newStudent) {
         return ResponseEntity.ok().body(service.patchStudent(studentId, newStudent));
     }
 
-    @PostMapping("/by/e-mails")
+    @PostMapping("/by/e-mails/")
     public List<Student> getStudentsByEmails(@RequestBody List<String> emails) {
         return service.getStudentsByEmails(emails);
     }
