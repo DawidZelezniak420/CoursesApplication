@@ -15,6 +15,10 @@ public interface StudentFeignClient {
     @GetMapping("/students/{studentId}/")
     StudentDto getStudentById(@PathVariable Long studentId);
 
+<<<<<<< HEAD
     @PostMapping("/students/by/e-mails/")
+=======
+    @PostMapping("students/by/e-mails/")
+>>>>>>> 51a5f67686452dfab07e0e6e4adc87d763a9f91c
     List<StudentDto> getStudentsByEmails(@RequestBody List<String> emails);
 }
