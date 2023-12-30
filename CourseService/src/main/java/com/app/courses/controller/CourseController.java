@@ -28,7 +28,7 @@ public class CourseController {
 
     // quick add list of courses(More info in TestingData class)
     @PostMapping("/add/list/")
-    public void addCoursesList(@RequestBody  List<Course> courses) {
+    public void addCoursesList(@RequestBody List<Course> courses) {
         courseService.addListCourses(courses);
     }
 
