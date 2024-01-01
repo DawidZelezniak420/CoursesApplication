@@ -14,6 +14,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.ConnectException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,17 +93,21 @@ public class CourseServiceImpl implements CourseService {
     public void deleteEnrolledMember(String memberEmail, String courseId) {
         Course course = getCourseById(courseId);
         CourseValidator.validateCourseIsActive(course);
-            List<CourseMember> courseMembers = course.getCourseMembers();
+        List<CourseMember> courseMembers = course.getCourseMembers();
         courseMembers.removeIf(courseMember -> courseMember.getEmail().equals(memberEmail));
         course.decreaseParticipantsNumber();
         courseRepository.save(course);
     }
 
+    // throw exception if student service is unavailable
+    // or student id does not exists in database
     private StudentDto sendRequestToStudentService(Long studentId) {
         StudentDto studentToEnroll;
         try {
             studentToEnroll = feignClient.getStudentById(studentId);
-        } catch (FeignException exception) {
+        } catch (FeignException.ServiceUnavailable ex) {
+            throw new CourseException(CourseError.STUDENT_SERVICE_IS_UNAVAILABLE);
+        } catch (FeignException ex) {
             throw new CourseException(CourseError.STUDENT_ID_DOES_NOT_EXISTS);
         }
         return studentToEnroll;
