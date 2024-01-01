@@ -51,7 +51,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
 
-    // get courses by status or get oll if status is null
+    // get courses by status or get all if status is null
     public List<Course> getCoursesByStatus(Course.Status status) {
         return status != null ? courseRepository.findAllByStatus(status) : courseRepository.findAll();
     }
