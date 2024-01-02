@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
@@ -24,6 +25,7 @@ public class EmailSenderImpl implements EmailSender {
         this.mailSender = mailSender;
     }
 
+    @Async
     public void sendCourseReminders(Notification notification) {
         String title = "Remember about you course: " + notification.getCourseName();
         String content = buildEmailContent(notification).toString();
@@ -36,7 +38,8 @@ public class EmailSenderImpl implements EmailSender {
         });
     }
 
-    private void buildAndSendEmail(String to, String title, String content) throws MessagingException {
+    @Async
+    void buildAndSendEmail(String to, String title, String content) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
         mimeMessageHelper.setTo(to);
@@ -44,6 +47,7 @@ public class EmailSenderImpl implements EmailSender {
         mimeMessageHelper.setText(content, false);
         mailSender.send(mimeMessage);
     }
+
 
     private StringBuilder buildEmailContent(Notification notification) {
         StringBuilder content = new StringBuilder();
