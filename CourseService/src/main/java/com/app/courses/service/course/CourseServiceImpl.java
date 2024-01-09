@@ -11,10 +11,10 @@ import com.app.courses.service.notifications.EmailSender;
 import com.app.courses.service.notifications.NotificationCreator;
 import com.app.courses.validation.CourseValidator;
 import feign.FeignException;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.net.ConnectException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,12 +61,12 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.findAll();
     }
 
-    public Course getCourseById(String courseId) {
+    public Course getCourseById(String courseId) throws CourseException {
         return courseRepository.findByCourseId(courseId)
                 .orElseThrow(() -> new CourseException(CourseError.COURSE_NOT_FOUND));
     }
 
-    public void deleteCourse(String courseId) {
+    public void deleteCourse(String courseId) throws CourseException {
         Course courseFormDb = getCourseById(courseId);
         courseRepository.delete(courseFormDb);
     }
@@ -102,13 +102,15 @@ public class CourseServiceImpl implements CourseService {
     // throw exception if student service is unavailable
     // or student id does not exists in database
     private StudentDto sendRequestToStudentService(Long studentId) {
-        StudentDto studentToEnroll;
+        StudentDto studentToEnroll = new StudentDto();
         try {
             studentToEnroll = feignClient.getStudentById(studentId);
-        } catch (FeignException.ServiceUnavailable ex) {
-            throw new CourseException(CourseError.STUDENT_SERVICE_IS_UNAVAILABLE);
         } catch (FeignException ex) {
-            throw new CourseException(CourseError.STUDENT_ID_DOES_NOT_EXISTS);
+            if (ex.status() == HttpStatus.SC_NOT_FOUND) {
+                throw new CourseException(CourseError.STUDENT_ID_DOES_NOT_EXISTS);
+            } else if (ex.status() == HttpStatus.SC_SERVICE_UNAVAILABLE) {
+                throw new CourseException(CourseError.STUDENT_SERVICE_IS_UNAVAILABLE);
+            } else throw new CourseException(CourseError.INTERNAL_SERVER_ERROR);
         }
         return studentToEnroll;
     }
