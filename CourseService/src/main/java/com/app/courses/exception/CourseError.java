@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum CourseError {
-    COURSE_NOT_FOUND("Course not found!"),
+    COURSE_NOT_FOUND("Course not found!"), 
     COURSE_ALREADY_EXISTS("Course already exists!"),
     COURSE_START_DATE_IS_AFTER_END_DATE("Course start date is after end date!"),
     COURSE_PARTICIPANTS_LIMIT_EXCEEDED("The limit of course participants has been exceeded!"),
