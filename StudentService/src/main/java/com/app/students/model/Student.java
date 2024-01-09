@@ -21,19 +21,24 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "studentIdGenerator")
     private Long studentId;
+
     @NotBlank(message = "First name cannot be null or blank")
     @Size(min = 3, message = "First name length cannot be less than 3")
     private String firstName;
+
     @NotBlank(message = "Last name cannot be null or blank")
     @Size(min = 3, message = "Last name length cannot be less than 3")
     private String lastName;
+
     @Column(unique = true)
     @NotBlank(message = "E-mail cannot be null or blank")
     @Email(message = "Invalid email format")
     private String email;
+
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Status cannot be null")
     private Status status;
+
     @JsonFormat(pattern = "yyyy-MM-dd 'T' HH:mm:ss")
     private LocalDateTime enrollDate;
 
